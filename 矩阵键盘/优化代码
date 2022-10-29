@@ -1,0 +1,71 @@
+#include<reg52.h>
+#include<intrins.h>
+#define uint unsigned int
+#define uchar unsigned char
+uchar code table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x67};
+sbit wei=P2^7;/*定义位选寄存器*/
+sbit duan=P2^6;/*定义段选寄存器*/
+void delay(uint sc);
+void display(uchar num1);
+void scanf();
+uchar num1;
+void main()
+{
+	while(1)
+	{
+		display(num1);
+		scanf();
+	}
+}
+void delay(uint sc)
+{
+	uint i,j;
+	for(i=sc;i>0;i--)
+		for(j=110;j>0;j--)
+		{
+			;
+		}
+}
+void display(uchar num1)
+{
+	P0=0xfe;
+	wei=1;
+	wei=0;
+	P0=table[num1];
+	duan=1;
+	duan=0;
+	delay(5);
+}
+void scanf()
+{
+	uchar temph,templ;
+	P3=0x0f;/*截取高四位IO端口数据，即列判断*/
+	templ=P3&0x0f;
+	if(templ!=0x0f)
+	{
+		delay(10);
+		switch(templ)
+		{
+			case 0x0e:num1=0*4;break;
+			case 0x0d:num1=1*4;break;
+			case 0x0b:num1=2*4;break;
+			case 0x07:num1=3*4;break;
+		}
+	}
+	P3=0xf0;/*行列电位翻转 */
+	temph=P3&0xf0;
+	if(temph!=0xf0)
+	{
+		switch(temph)
+		{
+			case 0xe0:num1=num1+0;break;
+			case 0xd0:num1=num1+1;break;
+			case 0xb0:num1=num1+2;break;
+			case 0x70:num1=num1+3;break;
+		}
+	}
+	while(P3==0xf0||P3==0x0f)
+	{
+		;
+	}
+}
