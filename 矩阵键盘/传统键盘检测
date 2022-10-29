@@ -1,0 +1,147 @@
+#include<reg52.h>
+#define uint unsigned int
+#define uchar unsigned char
+uchar code table[]={0x3f,0x06,0x5b,0x4f,0x66,
+	0x6d,0x7d,0x07,0x7f,0x67};
+uchar nu1,nu2,nu3,nu4,nu0,var;
+void dis(uchar nu1,nu2,nu3,nu4);
+void delay(uint sc);
+void scanf();
+void main()
+{
+	while(1)
+	{
+		dis(nu1,nu2,nu3,nu4);
+		scanf();
+	}
+}
+/*==================延时函数====================*/
+void delay(uint sc)
+{
+	uint i,j;
+	for(i=sc;i>0;i--)
+		for(j=110;j>0;j--)
+		{
+			;
+		}
+}
+/*================动态数码管显示================*/
+void dis(uchar nu1,nu2,nu3,nu4)
+{
+	uchar temp;
+	for(temp=0;temp<=4;temp++)
+	{
+		P2=(temp<<2);
+		switch(temp)
+		{
+			case 0:P0=table[nu4];break;	
+			case 1:P0=table[nu3];break;
+			case 2:P0=table[nu2];break;
+			case 3:P0=table[nu1];break;
+		}
+		delay(2);
+		P0=0;
+	}
+}
+/*===================矩阵按键检测=======================*/
+void scanf()
+{
+	uchar temp1;
+	P1=0x0f;
+	temp1=P1&0x0f;
+	if(temp1!=0x0f)
+	{
+		delay(100);
+		nu0++;
+		P3=0x7f;						 //0111 1111
+		temp1=P3&0x7f;
+		switch(temp1)
+		{
+			case 0x77:var=0;break;
+			case 0x7b:var=1;break;
+			case 0x7d:var=2;break;
+			case 0x7e:var=3;break; 
+		}
+		P3=0xbf;						  //1011 1111
+		temp1=P3&0xbf;
+		switch(temp1)
+		{
+			case 0xb7:var=4;break;
+			case 0xbb:var=5;break;
+			case 0xbd:var=6;break;
+			case 0xbe:var=7;break; 
+		}
+		P3=0xdf;						 //1101 1111
+		temp1=P3&0xdf;
+		switch(temp1)
+		{
+			case 0xd7:var=8;break;
+			case 0xdb:var=9;break;
+			case 0xdd:var=2;break;
+			case 0xde:var=3;break; 
+		}
+		P3=0xef;					   //1110 1111
+		temp1=P3&0xef;
+		switch(temp1)
+		{
+			case 0xe7:var=0;break;
+			case 0xeb:var=1;break;
+			case 0xed:var=2;break;
+			case 0xee:var=3;break; 
+		}
+		switch(nu0)
+		{
+			case 1:var=nu1;break;
+			case 2:var=nu2;break;
+			case 3:var=nu3;break;
+			case 4:var=nu4;break;
+		}
+		while(temp1!=0x0f)
+		{
+			P3=0x0f;
+			temp1=P3&0x0f;
+		}
+	}
+/*===================================================================*/
+//	uchar temp1;
+//	P1=0xf0;						   //1111 0000
+//	delay(1);
+//	temp1=P1&0xf0;
+//	if(temp1!=0xf0)
+//	{
+//		delay(100);
+//		nu0++;
+//		switch(temp1)
+//		{
+//			case 0x70:var=0;break;
+//			case 0xb0:var=4;break;
+//			case 0xd0:var=8;break;
+//			case 0xe0:var=12;break;
+//		}
+//		delay(5);
+//		P1=0x0f;
+//		delay(1);
+//		temp1=P1&0x0f;						 //0000 1111
+//		if(temp1!=0x0f)
+//		{
+//			switch(temp1)
+//			{
+//				case 0x07:var+=0;break;
+//				case 0x0b:var+=1;break;
+//				case 0x0d:var+=2;break;
+//				case 0x0e:var+=3;break;						  
+//			}
+//		}
+//		switch(nu0)
+//		{
+//			case 1:var=nu1;break;
+//			case 2:var=nu2;break;
+//			case 3:var=nu3;break;
+//			case 4:var=nu4;break;
+//		}
+//		while(temp1!=0x0f)
+//		{
+//			;
+//		}
+//	}
+}
