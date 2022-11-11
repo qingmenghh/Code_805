@@ -48,13 +48,13 @@ void scanf()
 {
 	uchar temp1;
 	P1=0x0f;
-	temp1=P1&0x0f;
+	temp1=P3&0x0f;
 	if(temp1!=0x0f)
 	{
 		delay(100);
 		nu0++;
-		P3=0x7f;						 //0111 1111
-		temp1=P3&0x7f;
+		P1=0x7f;						 //0111 1111
+		temp1=P1&0x7f;
 		switch(temp1)
 		{
 			case 0x77:var=0;break;
@@ -62,8 +62,8 @@ void scanf()
 			case 0x7d:var=2;break;
 			case 0x7e:var=3;break; 
 		}
-		P3=0xbf;						  //1011 1111
-		temp1=P3&0xbf;
+		P1=0xbf;						  //1011 1111
+		temp1=P1&0xbf;
 		switch(temp1)
 		{
 			case 0xb7:var=4;break;
@@ -71,8 +71,8 @@ void scanf()
 			case 0xbd:var=6;break;
 			case 0xbe:var=7;break; 
 		}
-		P3=0xdf;						 //1101 1111
-		temp1=P3&0xdf;
+		P1=0xdf;						 //1101 1111
+		temp1=P1&0xdf;
 		switch(temp1)
 		{
 			case 0xd7:var=8;break;
@@ -80,8 +80,8 @@ void scanf()
 			case 0xdd:var=2;break;
 			case 0xde:var=3;break; 
 		}
-		P3=0xef;					   //1110 1111
-		temp1=P3&0xef;
+		P1=0xef;					   //1110 1111
+		temp1=P1&0xef;
 		switch(temp1)
 		{
 			case 0xe7:var=0;break;
@@ -98,8 +98,9 @@ void scanf()
 		}
 		while(temp1!=0x0f)
 		{
-			P3=0x0f;
-			temp1=P3&0x0f;
+			P1=0x0f;
+			temp1=P1
+			&0x0f;
 		}
 	}
 /*===================================================================*/
